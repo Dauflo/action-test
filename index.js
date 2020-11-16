@@ -1,6 +1,6 @@
 const core = require("@actions/core")
 const github = require("@actions/github")
-const exec = require("@actions/exec")
+const exec = require("child_process")
 
 async function run() {
     try {
@@ -16,7 +16,10 @@ async function run() {
 
         let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[0].tag_name
 
-        console.log(await exec.exec(`git diff-tree --name-only HEAD..${lastRelease}`))
+        // console.log(await exec.exec(`git diff-tree --name-only HEAD..${lastRelease}`))
+        exec(`git diff-tree --name-only HEAD..${lastRelease}`, (error, stdout, stderr) => {
+            console.log(stdout)
+        })
     } catch (error) {
         core.setFailed(error.message)
     }
