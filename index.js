@@ -16,7 +16,7 @@ async function run() {
 
         let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[0].tag_name
 
-        console.log(await exec.exec(`git diff --name-only HEAD..${lastRelease}`))
+        console.log(await exec.exec(`git diff-tree --name-only HEAD..${lastRelease}`))
     } catch (error) {
         core.setFailed(error.message)
     }
