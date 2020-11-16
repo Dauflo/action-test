@@ -14,7 +14,7 @@ async function run() {
 
         console.log(owner, repo)
 
-        let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[0].name
+        let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[0].tag_name
 
         console.log(await exec.exec(`git diff --name-only HEAD...${lastRelease} HEAD`))
     } catch (error) {
