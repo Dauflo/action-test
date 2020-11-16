@@ -1,6 +1,7 @@
 const core = require("@actions/core")
 const github = require("@actions/github")
 const { exec } = require("child_process")
+const fs= require("fs")
 
 async function run() {
     try {
@@ -18,7 +19,13 @@ async function run() {
 
         // console.log(await exec.exec(`git diff-tree --name-only HEAD..${lastRelease}`))
         exec(`git diff-tree --name-only HEAD..${lastRelease}`, (error, stdout, stderr) => {
-            console.log(stdout)
+            folders = stdout.split("\n")
+            for (let folder of folders) {
+                let dockerfilePath = `${folder}/Dockerfile`
+                if (fs.existsSync(dockerfilePath)) {
+                    console.log(dockerfilePath)
+                }
+            }
         })
     } catch (error) {
         core.setFailed(error.message)
