@@ -4,8 +4,8 @@ const github = require("@actions/github")
 async function run() {
     try {
         const payload = JSON.stringify(github.context.payload, undefined, 2)
-        let owner = payload.repository.owner.name
-        let repo = payload.repository.name
+        let owner = payload["repository"]["owner"]["name"]
+        let repo = payload["repository"]["name"]
 
         console.log(owner, repo)
     } catch (error) {
