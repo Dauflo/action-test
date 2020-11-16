@@ -24,6 +24,15 @@ async function run() {
                 let dockerfilePath = `${folder}/Dockerfile`
                 if (fs.existsSync(dockerfilePath)) {
                     console.log(dockerfilePath)
+
+                    octokit.repos.createDispatchEvent({
+                        owner,
+                        repo,
+                        event_type: "test",
+                        client_payload: {
+                            dockerfile: dockerfilePath
+                        }
+                    })
                 }
             }
         })
