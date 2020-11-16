@@ -1,5 +1,6 @@
 const core = require("@actions/core")
 const github = require("@actions/github")
+const exec = require("@actions/exec")
 
 async function run() {
     try {
@@ -13,7 +14,9 @@ async function run() {
 
         console.log(owner, repo)
 
-        console.log(await octokit.repos.listReleases({owner, repo}))
+        let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[0].name
+
+        console.log(await exec.exec(`git diff --name-only HEAD..${lastRelease}`))
     } catch (error) {
         core.setFailed(error.message)
     }
