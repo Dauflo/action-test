@@ -19,7 +19,7 @@ async function run() {
 
         var gitString = ''
 
-        if (releases.length > 1) {
+        if (releases.data.length > 1) {
             gitString = `git diff-tree --name-only HEAD..${releases.data[1].tag_name}`
         } else {
             let { stdout, _ } = await exec('git rev-list --max-parents=0 HEAD')
