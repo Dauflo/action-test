@@ -1,12 +1,8 @@
-name: "Dauflo test"
-description: "Trying to do things"
+name: "Dauflo Monorepo Docker Manager"
+description: "This action will manager the build and push of your docker images. It will rebuild and push online if there had been a change between two releases"
 inputs:
-  who-to-greet:
-    description: "Who to greet"
-    default: "World"
-outputs:
-  time:
-    description: "The time we greeted you"
+  access-token:
+    description: "Access token to auth the action on the repo"
 
 runs:
   using: "node12"

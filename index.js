@@ -5,7 +5,7 @@ const fs= require("fs")
 
 async function run() {
     try {
-        const myToken = core.getInput("who-to-greet")
+        const myToken = core.getInput("access-token")
         const octokit = github.getOctokit(myToken)
 
         let owner = github.context.payload.repository.owner.login
