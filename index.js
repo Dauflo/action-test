@@ -13,9 +13,20 @@ async function run() {
 
         console.log(owner, repo)
 
-        let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[1].tag_name
+        // let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[1].tag_name
+        let releases =  await (await octokit.repos.listReleases({owner, repo}))
 
-        exec(`git diff-tree --name-only HEAD..${lastRelease}`, (error, stdout, stderr) => {
+        let gitString = ''
+
+        if (releases.length > 1) {
+            gitString = `git diff-tree --name-only HEAD..${releases.data[1].tag_name}`
+        } else {
+            exec('git rev-list --max-parents=0 HEAD', (error, stdout, stderr) => {
+                gitString = `git diff-tree --name-only HEAD..${stdout}`
+            })
+        }
+
+        exec(gitString, (error, stdout, stderr) => {
             folders = stdout.split("\n")
             for (let folder of folders) {
                 let dockerfilePath = `${folder}/Dockerfile`
