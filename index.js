@@ -16,7 +16,6 @@ async function run() {
         let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[1].tag_name
 
         exec(`git diff-tree --name-only HEAD..${lastRelease}`, (error, stdout, stderr) => {
-            console.log(stdout)
             folders = stdout.split("\n")
             for (let folder of folders) {
                 let dockerfilePath = `${folder}/Dockerfile`
@@ -28,7 +27,8 @@ async function run() {
                         repo,
                         event_type: "test",
                         client_payload: {
-                            dockerfile: dockerfilePath
+                            dockerfile: dockerfilePath,
+                            dockerName: folder
                         }
                     })
                 }
