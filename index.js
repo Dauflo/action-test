@@ -40,7 +40,8 @@ async function run() {
                         event_type: "test",
                         client_payload: {
                             dockerfile: dockerfilePath,
-                            dockerName: folder
+                            dockerName: folder,
+                            version: releases.data[0].tag_name
                         }
                     })
                 }
