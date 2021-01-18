@@ -22,6 +22,7 @@ async function run() {
             gitString = `git diff-tree --name-only HEAD..${releases.data[1].tag_name}`
         } else {
             exec('git rev-list --max-parents=0 HEAD', (error, stdout, stderr) => {
+                console.log(stdout)
                 gitString = `git diff-tree --name-only HEAD..${stdout}`
             })
         }
