@@ -4,7 +4,7 @@ const { exec } = require("child_process")
 const fs= require("fs")
 
 async function run() {
-    try {
+    // try {
         const myToken = core.getInput("access-token")
         const octokit = github.getOctokit(myToken)
 
@@ -46,9 +46,9 @@ async function run() {
                 }
             }
         })
-    } catch (error) {
-        core.setFailed(error.message)
-    }
+    // } catch (error) {
+    //     core.setFailed(error.message)
+    // }
 }
 
 run()
