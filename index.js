@@ -4,7 +4,7 @@ const { exec } = require("child_process")
 const fs= require("fs")
 
 async function run() {
-    // try {
+    try {
         const myToken = core.getInput("access-token")
         const octokit = github.getOctokit(myToken)
 
@@ -16,7 +16,7 @@ async function run() {
         // let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[1].tag_name
         let releases =  await (await octokit.repos.listReleases({owner, repo}))
 
-        let gitString = ''
+        var gitString = ''
 
         if (releases.length > 1) {
             gitString = `git diff-tree --name-only HEAD..${releases.data[1].tag_name}`
@@ -46,9 +46,9 @@ async function run() {
                 }
             }
         })
-    // } catch (error) {
-    //     core.setFailed(error.message)
-    // }
+    } catch (error) {
+        core.setFailed(error.message)
+    }
 }
 
 run()
