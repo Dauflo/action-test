@@ -37,7 +37,7 @@ async function run() {
                     octokit.repos.createDispatchEvent({
                         owner,
                         repo,
-                        event_type: "test",
+                        event_type: "Dispatched event",
                         client_payload: {
                             dockerfile: dockerfilePath,
                             dockerName: folder,
