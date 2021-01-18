@@ -21,11 +21,10 @@ async function run() {
         if (releases.length > 1) {
             gitString = `git diff-tree --name-only HEAD..${releases.data[1].tag_name}`
         } else {
-            exec('git rev-list --max-parents=0 HEAD', (error, stdout, stderr) => {
-                console.log(stdout)
-                gitString = `git diff-tree --name-only HEAD..${stdout}`
-            })
+            let { stdout, _ } = await exec('git rev-list --max-parents=0 HEAD')
+            gitString = `git diff-tree --name-only HEAD..${stdout}`
         }
+        console.log(gitString)
 
         exec(gitString, (error, stdout, stderr) => {
             folders = stdout.split("\n")
