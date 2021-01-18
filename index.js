@@ -1,6 +1,7 @@
 const core = require("@actions/core")
 const github = require("@actions/github")
-const { exec } = require("child_process")
+const util = require('util')
+const exec = util.promisify(require('child_process').exec)
 const fs= require("fs")
 
 async function run() {
@@ -22,7 +23,7 @@ async function run() {
             gitString = `git diff-tree --name-only HEAD..${releases.data[1].tag_name}`
         } else {
             let { stdout, _ } = await exec('git rev-list --max-parents=0 HEAD')
-            gitString = `git diff-tree --name-only HEAD..${stdout}`
+            gitString = `git diff-tree --name-only HEAD..${stdout.split('\n')[0]}`
         }
         console.log(gitString)
 
