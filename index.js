@@ -7,6 +7,9 @@ async function run() {
     try {
         const myToken = core.getInput("who-to-greet")
         const octokit = github.getOctokit(myToken)
+
+        console.log(github.context.payload)
+
         let owner = github.context.payload.repository.owner.name
         let repo = github.context.payload.repository.name
 
