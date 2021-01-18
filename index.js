@@ -14,6 +14,7 @@ async function run() {
         console.log(owner, repo)
 
         let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[0].tag_name
+        console.log(await (await octokit.repos.listReleases({owner, repo})).data)
 
         exec(`git diff-tree --name-only HEAD..${lastRelease}`, (error, stdout, stderr) => {
             console.log(stdout)
