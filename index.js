@@ -1,20 +1,21 @@
-const core = require("@actions/core")
-const github = require("@actions/github")
+const core = require('@actions/core')
+const github = require('@actions/github')
 const util = require('util')
 const exec = util.promisify(require('child_process').exec)
-const fs= require("fs")
+const fs= require('fs')
 
 async function run() {
     try {
-        const myToken = core.getInput("access-token")
+        const myToken = core.getInput('access-token')
+        const ref = core.getInput('ref')
         const octokit = github.getOctokit(myToken)
 
         let owner = github.context.payload.repository.owner.login
         let repo = github.context.payload.repository.name
 
         console.log(owner, repo)
+        console.log(ref)
 
-        // let lastRelease =  await (await octokit.repos.listReleases({owner, repo})).data[1].tag_name
         let releases =  await (await octokit.repos.listReleases({owner, repo}))
 
         var gitString = ''
@@ -28,7 +29,7 @@ async function run() {
         console.log(gitString)
 
         exec(gitString, (error, stdout, stderr) => {
-            folders = stdout.split("\n")
+            folders = stdout.split('\n')
             for (let folder of folders) {
                 let dockerfilePath = `${folder}/Dockerfile`
                 if (fs.existsSync(dockerfilePath)) {
@@ -37,11 +38,12 @@ async function run() {
                     octokit.repos.createDispatchEvent({
                         owner,
                         repo,
-                        event_type: "Dispatched event",
+                        event_type: 'Dispatched event',
                         client_payload: {
                             dockerfile: dockerfilePath,
                             dockerName: folder,
-                            version: releases.data[0].tag_name
+                            version: releases.data[0].tag_name,
+                            ref: ref
                         }
                     })
                 }

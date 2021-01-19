@@ -3,6 +3,8 @@ description: "This action will manager the build and push of your docker images.
 inputs:
   access-token:
     description: "Access token to auth the action on the repo"
+  ref:
+    description: "The branch or tag ref that triggered the workflow run"
 
 runs:
   using: "node12"
