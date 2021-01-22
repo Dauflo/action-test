@@ -18,17 +18,31 @@ async function run() {
 
         let releases =  await (await octokit.repos.listReleases({owner, repo}))
 
-        var gitString = ''
+        let tag = null
 
         if (releases.data.length > 1) {
-            gitString = `git diff-tree --name-only HEAD..${releases.data[1].tag_name}`
-        } else {
-            let { stdout, _ } = await exec('git rev-list --max-parents=0 HEAD')
-            gitString = `git diff-tree --name-only HEAD..${stdout.split('\n')[0]}`
+            // if release from master, we want to get the last tag from master
+            if (releases.data[0].target_commitish === 'master') {
+                for (let i = 1; i < releases.data.length; i++) {
+                    if (releases.data[i].target_commitish === 'master') {
+                        // gitString = `git diff-tree --name-only HEAD..${releases.data[i].tag_name}`        
+                        tag = releases.data[i].tag_name
+                        break
+                    }
+                }
+            } else {
+                // if release not from master, we want the last tag
+                tag = releases.data[1].tag_name
+            }
         }
-        console.log(gitString)
 
-        exec(gitString, (error, stdout, stderr) => {
+        // if there is no valid tags, take the first commit
+        if (!tag) {
+            let { stdout, _ } = await exec('git rev-list --max-parents=0 HEAD')
+            tag = stdout.split('\n')[0]
+        }
+
+        exec(`git diff-tree --name-only HEAD..${tag}`, (error, stdout, stderr) => {
             folders = stdout.split('\n')
             for (let folder of folders) {
                 let dockerfilePath = `${folder}/Dockerfile`
