@@ -22,9 +22,11 @@ async function run() {
 
         if (releases.data.length > 1) {
             // if release from master, we want to get the last tag from master
-            if (releases.data[0].target_commitish === 'master') {
+            if (releases.data[0].target_commitish === 'master' ||
+                releases.data[0].target_commitish === 'main') {
                 for (let i = 1; i < releases.data.length; i++) {
-                    if (releases.data[i].target_commitish === 'master') {
+                    if (releases.data[i].target_commitish === 'master' ||
+                        releases.data[i].target_commitish === 'master') {
                         // gitString = `git diff-tree --name-only HEAD..${releases.data[i].tag_name}`        
                         tag = releases.data[i].tag_name
                         break
