@@ -23,7 +23,7 @@ jobs:
         with:
           allowUpdates: true
           body: ${{ steps.github_release.outputs.changelog }}
-          tag: ${{ github.ref }}
+          # tag: ${{ github.ref }}
           token: ${{ secrets.GITHUB_TOKEN }}
 
 # on:
