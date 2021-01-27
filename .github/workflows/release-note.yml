@@ -21,9 +21,10 @@ jobs:
       - name: Update release
         uses: ncipollo/release-action@v1
         with:
-          allowUpdate: true
+          allowUpdates: true
           body: ${{ steps.github_release.outputs.changelog }}
           tag: ${{ github.ref }}
+          token: ${{ secrets.GITHUB_TOKEN }}
 
 # on:
 #   push:
